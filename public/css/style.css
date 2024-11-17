@@ -1,0 +1,117 @@
+/* public/css/style.css */
+
+/* Container untuk Layout */
+.container {
+    margin-top: 50px;
+    padding: 0 15px; /* Agar tidak terlalu jauh dari tepi */
+}
+
+/* Gambar Produk */
+.product-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Detail Produk */
+.product-details {
+    padding: 25px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Judul Buku */
+.product-title {
+    font-size: 34px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Nama Penulis */
+.author-name {
+    font-size: 18px;
+    font-style: italic;
+    color: #555;
+    margin-top: 8px;
+}
+
+/* Informasi Penerbit dan Tahun Terbit */
+.publisher, .published-year {
+    font-size: 16px;
+    color: #777;
+    margin-top: 12px;
+}
+
+/* Kategori dan Saldo Buku */
+.category, .availability, .total-copies {
+    font-size: 16px;
+    color: #333;
+    margin-top: 10px;
+}
+
+/* Tombol Pinjam Buku */
+.button-container .btn {
+    font-size: 18px;
+    padding: 12px 25px;
+    border-radius: 5px;
+    margin-top: 25px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    color: white;
+    border: none;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+}
+
+/* Responsif untuk Mobile */
+@media (max-width: 767px) {
+    .row {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product-image img {
+        width: 100%; /* Memastikan gambar tetap proporsional di mobile */
+        max-width: 80%;
+        height: auto;
+    }
+
+    .product-details {
+        padding: 15px;
+        margin-top: 20px;
+    }
+
+    .product-title {
+        font-size: 28px;
+    }
+
+    .author-name {
+        font-size: 16px;
+    }
+
+    .publisher, .published-year, .category, .availability, .total-copies {
+        font-size: 14px;
+    }
+
+    .button-container .btn {
+        padding: 10px 20px;
+    }
+}
