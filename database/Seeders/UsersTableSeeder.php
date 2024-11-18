@@ -13,27 +13,30 @@ class UsersTableSeeder extends Seeder
         DB::table('users')->updateOrInsert(
             ['id' => 1],
             [
-                'name' => 'User One',
-                'email' => 'userone@example.com',
-                'password' => Hash::make('password')
+                'name' => 'Admin User',
+                'email' => 'admin@example.com',
+                'password' => Hash::make('password'),
+                'role_id' => 1, // admin
             ]
         );
 
         DB::table('users')->updateOrInsert(
             ['id' => 2],
             [
-                'name' => 'User Two',
-                'email' => 'usertwo@example.com',
-                'password' => Hash::make('password')
+                'name' => 'Staff User',
+                'email' => 'staff@example.com',
+                'password' => Hash::make('password'),
+                'role_id' => 2, // staff
             ]
         );
 
         DB::table('users')->updateOrInsert(
             ['id' => 3],
             [
-                'name' => 'User Three',
-                'email' => 'userthree@example.com',
-                'password' => Hash::make('password')
+                'name' => 'Mahasiswa User',
+                'email' => 'mahasiswa@example.com',
+                'password' => Hash::make('password'),
+                'role_id' => 3, // mahasiswa
             ]
         );
 

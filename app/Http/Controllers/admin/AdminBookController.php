@@ -1,43 +1,32 @@
 <?php
+// app/Http/Controllers/admin/AdminBookController.php
+namespace App\Http\Controllers\admin;
 
-namespace App\Http\Controllers;
-
+use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
-class BookController extends Controller
+class AdminBookController extends Controller
 {
-    /**
-     * Display a listing of the books.
-     */
     public function index()
     {
         $books = Book::with(['category', 'reviews', 'loans'])->get();
-
         foreach ($books as $book) {
             $book->average_rating = $book->reviews->avg('rating');
             $book->loan_count = $book->loans->count();
             $book->popularity = $book->average_rating * 0.7 + $book->loan_count * 0.3;
         }
-
         $books = $books->sortByDesc('popularity');
-
-        return view('books.index', compact('books'));
+        return view('admin.books.index', compact('books'));
     }
 
-    /**
-     * Show the form for creating a new book.
-     */
     public function create()
     {
         $categories = Category::all();
-        return view('books.create', compact('categories'));
+        return view('admin.books.create', compact('categories'));
     }
 
-    /**
-     * Store a newly created book in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -64,34 +53,15 @@ class BookController extends Controller
             'image_path' => $imagePath,
         ]);
 
-        return redirect()->route('books.index')->with('success', 'Book created successfully.');
+        return redirect()->route('admin.books.index')->with('success', 'Book created successfully.');
     }
 
-    /**
-     * Display the specified book.
-     */
-    public function show(Book $book)
-    {
-        $book->load(['category', 'reviews', 'loans']);
-        $book->average_rating = $book->reviews->avg('rating');
-        $book->loan_count = $book->loans->count();
-        $book->popularity = $book->average_rating * 0.7 + $book->loan_count * 0.3;
-
-        return view('books.show', compact('book'));
-    }
-
-    /**
-     * Show the form for editing the specified book.
-     */
     public function edit(Book $book)
     {
         $categories = Category::all();
-        return view('books.edit', compact('book', 'categories'));
+        return view('admin.books.edit', compact('book', 'categories'));
     }
 
-    /**
-     * Update the specified book in storage.
-     */
     public function update(Request $request, Book $book)
     {
         $request->validate([
@@ -120,16 +90,12 @@ class BookController extends Controller
             'total_copies' => $request->total_copies,
         ]);
 
-        return redirect()->route('books.index')->with('success', 'Book updated successfully.');
+        return redirect()->route('admin.books.index')->with('success', 'Book updated successfully.');
     }
 
-    /**
-     * Remove the specified book from storage.
-     */
     public function destroy(Book $book)
     {
         $book->delete();
-
-        return redirect()->route('books.index')->with('success', 'Book deleted successfully.');
+        return redirect()->route('admin.books.index')->with('success', 'Book deleted successfully.');
     }
 }
