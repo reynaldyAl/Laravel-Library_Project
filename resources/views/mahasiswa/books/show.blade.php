@@ -22,7 +22,7 @@
                         <p class="card-text"><strong>Available Copies:</strong> {{ $book->available_copies }}</p>
                         <p class="card-text"><strong>Total Copies:</strong> {{ $book->total_copies }}</p>
                         @auth
-                            <a href="{{ route('loans.create', ['book_id' => $book->id]) }}" class="btn btn-primary">Borrow Book</a>
+                            <a href="{{ route('mahasiswa.loans.create', ['book_id' => $book->id]) }}" class="btn btn-primary">Borrow Book</a>
                         @else
                             <a href="{{ route('login') }}" class="btn btn-warning">Login to Borrow</a>
                         @endauth

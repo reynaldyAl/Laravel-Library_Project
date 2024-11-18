@@ -1,9 +1,9 @@
-<!-- resources/views/staff/reports/index.blade.php -->
+<!-- resources/views/admin/reports/index.blade.php -->
 @extends('layouts.app')
 
 @section('content')
     <div class="container mt-5">
-        <h1>Staff Reports</h1>
+        <h1>Admin Reports</h1>
         <p>Here you can view various reports and statistics.</p>
 
         <h2>Books</h2>
@@ -52,7 +52,7 @@
                         <td>{{ $loan->user->name }}</td>
                         <td>{{ $loan->loan_date }}</td>
                         <td>{{ $loan->return_date }}</td>
-                        <td>{{ $loan->loanStatus->name }}</td> <!-- Pastikan ini benar -->
+                        <td>{{ $loan->status }}</td>
                     </tr>
                 @endforeach
             </tbody>

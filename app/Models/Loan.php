@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Loan extends Model
 {
@@ -35,5 +36,11 @@ class Loan extends Model
         return $this->hasMany(Fine::class);
     }
 
-    
+    public function getOverdueDaysAttribute()
+    {
+        if ($this->return_date > $this->due_date) {
+            return Carbon::parse($this->return_date)->diffInDays(Carbon::parse($this->due_date));
+        }
+        return 0;
+    }
 }

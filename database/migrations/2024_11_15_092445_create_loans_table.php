@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('book_id')->nullable()->constrained('books')->nullOnDelete();
             $table->date('loan_date');
             $table->date('return_date');
-            $table->date('due_date');
+            $table->date('due_date')->nullable(); // Tambahkan nullable atau default value
             $table->foreignId('loan_status_id')->nullable()->constrained('loan_statuses')->nullOnDelete();
             $table->timestamps();
         });

@@ -20,7 +20,7 @@
                     <div class="card-body">
                         <h5 class="card-title">My Loans</h5>
                         <p class="card-text">View and manage your book loans.</p>
-                        <a href="{{ route('mahasiswa.loans.create') }}" class="btn btn-primary">Go to Loans</a>
+                        <a href="{{ route('mahasiswa.loans.index') }}" class="btn btn-primary">Go to Loans</a>
                     </div>
                 </div>
             </div>
