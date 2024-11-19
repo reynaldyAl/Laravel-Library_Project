@@ -1,11 +1,12 @@
 <?php
-// app/Http/Controllers/admin/AdminBookController.php
+
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AdminBookController extends Controller
 {
@@ -40,7 +41,9 @@ class AdminBookController extends Controller
             'image_path' => 'required|image',
         ]);
 
-        $imagePath = $request->file('image_path')->store('images', 'public');
+        $image = $request->file('image_path');
+        $imageName = $image->getClientOriginalName();
+        $image->move(public_path('images'), $imageName);
 
         Book::create([
             'title' => $request->title,
@@ -50,7 +53,7 @@ class AdminBookController extends Controller
             'category_id' => $request->category_id,
             'available_copies' => $request->available_copies,
             'total_copies' => $request->total_copies,
-            'image_path' => $imagePath,
+            'image_path' => 'images/' . $imageName,
         ]);
 
         return redirect()->route('admin.books.index')->with('success', 'Book created successfully.');
@@ -76,8 +79,10 @@ class AdminBookController extends Controller
         ]);
 
         if ($request->hasFile('image_path')) {
-            $imagePath = $request->file('image_path')->store('images', 'public');
-            $book->image_path = $imagePath;
+            $image = $request->file('image_path');
+            $imageName = $image->getClientOriginalName();
+            $image->move(public_path('images'), $imageName);
+            $book->image_path = 'images/' . $imageName;
         }
 
         $book->update([

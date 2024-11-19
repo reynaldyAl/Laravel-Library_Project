@@ -52,7 +52,7 @@
                         <td>{{ $loan->user->name }}</td>
                         <td>{{ $loan->loan_date }}</td>
                         <td>{{ $loan->return_date }}</td>
-                        <td>{{ $loan->status }}</td>
+                        <td>{{ $loan->Loanstatus->name }}</td>
                     </tr>
                 @endforeach
             </tbody>
