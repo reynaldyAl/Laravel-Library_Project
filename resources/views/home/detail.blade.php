@@ -1,5 +1,3 @@
-<!-- resources/views/home/detail.blade.php -->
-
 @extends('layouts.app')
 
 @section('content')
@@ -46,10 +44,34 @@
                     <div class="card-body">
                         <h5 class="card-title">Rating: {{ $review->rating }} / 5</h5>
                         <p class="card-text">{{ $review->comment }}</p>
-                        <p class="card-text"><small class="text-muted">by User {{ $review->user_id }}</small></p>
+                        <p class="card-text"><small class="text-muted">by {{ $review->user->name }}</small></p>
                     </div>
                 </div>
             @endforeach
+
+            <!-- Form untuk Menambahkan Ulasan Baru -->
+            @auth
+                <form action="{{ route('reviews.store', $book->id) }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="rating">Rating</label>
+                        <select class="form-control" id="rating" name="rating" required>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">Comment</label>
+                        <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                </form>
+            @else
+                <p><a href="{{ route('login') }}">Login</a> to leave a review.</p>
+            @endauth
         </div>
     </div>
 @endsection

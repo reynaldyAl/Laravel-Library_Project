@@ -14,11 +14,16 @@ use App\Http\Controllers\staff\StaffLoanController;
 use App\Http\Controllers\mahasiswa\MahasiswaBookController;
 use App\Http\Controllers\mahasiswa\MahasiswaDashboardController;
 use App\Http\Controllers\mahasiswa\MahasiswaLoanController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('home/{book}', [HomeController::class, 'show'])->name('home.detail');
+Route::get('catalog', [HomeController::class, 'catalog'])->name('home.catalog');
+
+// reviews
+Route::post('reviews/{book}', [ReviewController::class, 'store'])->name('reviews.store');
 
 // Authentication Routes
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');

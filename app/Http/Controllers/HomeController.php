@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -10,10 +11,22 @@ class HomeController extends Controller
     /**
      * Show the application landing page.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::all();
-        return view('home.index', compact('books'));
+        $query = Book::query();
+
+        // Pencarian berdasarkan judul atau penulis
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('title', 'like', "%{$search}%")
+                  ->orWhere('author', 'like', "%{$search}%");
+        }
+
+        // Menampilkan buku terbaru dan populer
+        $books = $query->orderBy('created_at', 'desc')->take(10)->get();
+        $popularBooks = Book::withCount('loans')->orderBy('loans_count', 'desc')->take(10)->get();
+
+        return view('home.index', compact('books', 'popularBooks'));
     }
 
     /**
@@ -21,6 +34,40 @@ class HomeController extends Controller
      */
     public function show(Book $book)
     {
+        $book->load('reviews.user'); // Load reviews with user
         return view('home.detail', compact('book'));
+    }
+
+    /**
+     * Show the book catalog.
+     */
+    public function catalog(Request $request)
+    {
+        $query = Book::query();
+
+        // Filter berdasarkan kategori
+        if ($request->has('category_id')) {
+            $query->where('category_id', $request->input('category_id'));
+        }
+
+        // Filter berdasarkan tahun terbit
+        if ($request->has('published_year')) {
+            $query->where('published_year', $request->input('published_year'));
+        }
+
+        // Opsi pengurutan
+        if ($request->has('sort_by')) {
+            $sortBy = $request->input('sort_by');
+            if ($sortBy == 'popularity') {
+                $query->withCount('loans')->orderBy('loans_count', 'desc');
+            } elseif ($sortBy == 'published_year') {
+                $query->orderBy('published_year', 'desc');
+            }
+        }
+
+        $books = $query->get();
+        $categories = Category::all();
+
+        return view('home.catalog', compact('books', 'categories'));
     }
 }
