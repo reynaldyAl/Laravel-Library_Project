@@ -10,6 +10,7 @@ use App\Http\Controllers\admin\AdminReportController;
 use App\Http\Controllers\staff\StaffBookController;
 use App\Http\Controllers\staff\StaffDashboardController;
 use App\Http\Controllers\staff\StaffReportController;
+use App\Http\Controllers\staff\StaffLoanController;
 use App\Http\Controllers\mahasiswa\MahasiswaBookController;
 use App\Http\Controllers\mahasiswa\MahasiswaDashboardController;
 use App\Http\Controllers\mahasiswa\MahasiswaLoanController;
@@ -41,6 +42,10 @@ Route::prefix('staff')->name('staff.')->group(function () {
     Route::get('dashboard', [StaffDashboardController::class, 'index'])->name('dashboard');
     Route::resource('books', StaffBookController::class);
     Route::get('reports', [StaffReportController::class, 'index'])->name('reports.index');
+    Route::get('loans', [StaffLoanController::class, 'index'])->name('loans.index');
+    Route::post('loans/{loan}/approve', [StaffLoanController::class, 'approveLoan'])->name('loans.approve');
+    Route::post('loans/{loan}/reject', [StaffLoanController::class, 'rejectLoan'])->name('loans.reject');
+    Route::post('loans/{loan}/confirm-return', [StaffLoanController::class, 'confirmReturn'])->name('loans.confirmReturn');
 });
 
 // Mahasiswa Routes
@@ -49,6 +54,7 @@ Route::prefix('mahasiswa')->name('mahasiswa.')->group(function () {
     Route::get('loans', [MahasiswaLoanController::class, 'index'])->name('loans.index'); // Tambahkan rute untuk melihat pinjaman
     Route::get('loans/create', [MahasiswaLoanController::class, 'create'])->name('loans.create');
     Route::post('loans', [MahasiswaLoanController::class, 'store'])->name('loans.store');
+    Route::post('loans/{loan}/return', [MahasiswaLoanController::class, 'returnBook'])->name('loans.return'); // Tambahkan rute untuk mengembalikan buku
     Route::resource('books', MahasiswaBookController::class)->only(['index', 'show']);
 });
 

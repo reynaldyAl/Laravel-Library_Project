@@ -18,6 +18,15 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
+                        <h5 class="card-title">Manage Loans</h5>
+                        <p class="card-text">Approve and manage book loans.</p>
+                        <a href="{{ route('staff.loans.index') }}" class="btn btn-primary">Go to Loans</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
                         <h5 class="card-title">View Reports</h5>
                         <p class="card-text">View various reports and statistics.</p>
                         <a href="{{ route('staff.reports.index') }}" class="btn btn-primary">Go to Reports</a>

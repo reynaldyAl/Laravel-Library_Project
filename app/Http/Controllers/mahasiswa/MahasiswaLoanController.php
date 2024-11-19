@@ -6,13 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\Loan;
 use App\Models\LoanStatus;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class MahasiswaLoanController extends Controller
 {
-    public function create(Request $request)
+    public function index()
+    {
+        $loans = Loan::where('user_id', Auth::id())->with('book', 'loanStatus')->get();
+        return view('mahasiswa.loans.index', compact('loans'));
+    }
+
+    public function create()
     {
         $books = Book::all();
         return view('mahasiswa.loans.create', compact('books'));
@@ -47,21 +54,18 @@ class MahasiswaLoanController extends Controller
         $due_date = $loan_date->copy()->addDays(14); // Hitung due_date otomatis (misalnya, 14 hari dari loan_date)
         $return_date = Carbon::parse($request->return_date);
 
-        $borrowedStatus = LoanStatus::where('name', 'borrowed')->first();
+        $waitingStatus = LoanStatus::where('name', 'waiting')->first();
         $overdueStatus = LoanStatus::where('name', 'overdue')->first();
 
-        if (!$borrowedStatus || !$overdueStatus) {
+        if (!$waitingStatus || !$overdueStatus) {
             return redirect()->back()->withErrors(['error' => 'Loan status not found. Please seed the database with loan statuses.']);
         }
 
-        $loan_status_id = $borrowedStatus->id;
+        $loan_status_id = $waitingStatus->id;
 
         if ($return_date->greaterThan($due_date)) {
             $loan_status_id = $overdueStatus->id;
         }
-
-        // Kurangi jumlah salinan buku yang tersedia
-        $book->decrement('available_copies');
 
         Loan::create([
             'user_id' => Auth::user()->id,
@@ -70,27 +74,29 @@ class MahasiswaLoanController extends Controller
             'return_date' => $request->return_date,
             'due_date' => $due_date,
             'loan_status_id' => $loan_status_id,
+            'is_approved' => false, // Set is_approved to false initially
         ]);
 
-        return redirect()->route('mahasiswa.dashboard')->with('success', 'Loan created successfully.');
+        return redirect()->route('mahasiswa.dashboard')->with('success', 'Loan request created successfully. Please wait for approval.');
     }
 
-    public function index()
+    public function returnBook(Request $request, $id)
     {
-        $loans = Loan::where('user_id', Auth::id())->with('book', 'loanStatus')->get();
-        return view('mahasiswa.loans.index', compact('loans'));
-    }
+        $loan = Loan::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
 
-    public function returnBook(Loan $loan)
-    {
+        // Kirim notifikasi ke staff
+        Notification::create([
+            'user_id' => Auth::id(),
+            'message' => 'Mahasiswa ' . Auth::user()->name . ' ingin mengembalikan buku "' . $loan->book->title . '".',
+            'read_status' => false,
+        ]);
+
+        // Update status pinjaman menjadi "waiting for return confirmation"
+        $waitingReturnStatus = LoanStatus::where('name', 'waiting')->first();
         $loan->update([
-            'return_date' => Carbon::now(),
-            'loan_status_id' => LoanStatus::where('name', 'returned')->first()->id,
+            'loan_status_id' => $waitingReturnStatus->id,
         ]);
 
-        // Tambahkan jumlah salinan buku yang tersedia
-        $loan->book->increment('available_copies');
-
-        return redirect()->route('mahasiswa.loans.index')->with('success', 'Book returned successfully.');
+        return redirect()->back()->with('success', 'Book return request sent successfully. Please wait for staff confirmation.');
     }
 }

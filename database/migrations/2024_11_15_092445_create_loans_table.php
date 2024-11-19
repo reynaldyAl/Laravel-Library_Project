@@ -16,9 +16,11 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('book_id')->nullable()->constrained('books')->nullOnDelete();
             $table->date('loan_date');
-            $table->date('return_date');
-            $table->date('due_date')->nullable(); // Tambahkan nullable atau default value
+            $table->date('return_date')->nullable();
+            $table->date('due_date')->nullable();
             $table->foreignId('loan_status_id')->nullable()->constrained('loan_statuses')->nullOnDelete();
+            $table->boolean('is_approved')->default(false);
+            $table->boolean('is_returned')->default(false);
             $table->timestamps();
         });
     }
