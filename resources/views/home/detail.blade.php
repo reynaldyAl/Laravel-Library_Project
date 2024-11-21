@@ -54,6 +54,14 @@
                         </h5>
                         <p class="card-text">{{ $review->comment }}</p>
                         <p class="card-text"><small class="text-muted">by {{ $review->user->name }}</small></p>
+                        @if(Auth::id() === $review->user_id)
+                            <a href="{{ route('reviews.edit', $review->id) }}" class="btn btn-secondary btn-sm">Edit</a>
+                            <form action="{{ route('reviews.destroy', $review->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        @endif
                     </div>
                 </div>
             @endforeach

@@ -1,4 +1,3 @@
-<!-- resources/views/mahasiswa/dashboard/index.blade.php -->
 @extends('layouts.app')
 
 @section('content')
@@ -29,7 +28,7 @@
                     <div class="card-body">
                         <h5 class="card-title">My Reviews</h5>
                         <p class="card-text">View and manage your book reviews.</p>
-                        <a href="#" class="btn btn-primary">Go to Reviews</a>
+                        <a href="{{ route('mahasiswa.reviews.index') }}" class="btn btn-primary">Go to Reviews</a>
                     </div>
                 </div>
             </div>

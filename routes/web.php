@@ -14,6 +14,7 @@ use App\Http\Controllers\staff\StaffLoanController;
 use App\Http\Controllers\mahasiswa\MahasiswaBookController;
 use App\Http\Controllers\mahasiswa\MahasiswaDashboardController;
 use App\Http\Controllers\mahasiswa\MahasiswaLoanController;
+use App\Http\Controllers\mahasiswa\MahasiswaReviewController;
 use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +25,9 @@ Route::get('catalog', [HomeController::class, 'catalog'])->name('home.catalog');
 
 // reviews
 Route::post('reviews/{book}', [ReviewController::class, 'store'])->name('reviews.store');
+Route::get('reviews/{review}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
+Route::put('reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
+Route::delete('reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 
 // Authentication Routes
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -61,6 +65,7 @@ Route::prefix('mahasiswa')->name('mahasiswa.')->group(function () {
     Route::post('loans', [MahasiswaLoanController::class, 'store'])->name('loans.store');
     Route::post('loans/{loan}/return', [MahasiswaLoanController::class, 'returnBook'])->name('loans.return'); // Tambahkan rute untuk mengembalikan buku
     Route::resource('books', MahasiswaBookController::class)->only(['index', 'show']);
+    Route::get('reviews', [MahasiswaReviewController::class, 'index'])->name('reviews.index'); // Tambahkan rute untuk melihat ulasan
 });
 
 // General Dashboard Route
