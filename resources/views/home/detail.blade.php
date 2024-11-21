@@ -13,7 +13,7 @@
             <div class="row no-gutters">
                 <div class="col-md-4">
                     <!-- Gambar Buku -->
-                    <img src="{{ asset($book->image_path) }}" class="card-img-top img-fluid" alt="{{ $book->title }}">
+                    <img src="{{ asset($book->image_path) }}" class="card-img-top img-fluid book-image" alt="{{ $book->title }}">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
@@ -42,7 +42,16 @@
             @foreach($book->reviews as $review)
                 <div class="card mb-3">
                     <div class="card-body">
-                        <h5 class="card-title">Rating: {{ $review->rating }} / 5</h5>
+                        <h5 class="card-title">
+                            Rating: 
+                            @for ($i = 1; $i <= 5; $i++)
+                                @if ($i <= $review->rating)
+                                    <i class="fas fa-star text-warning"></i>
+                                @else
+                                    <i class="far fa-star text-warning"></i>
+                                @endif
+                            @endfor
+                        </h5>
                         <p class="card-text">{{ $review->comment }}</p>
                         <p class="card-text"><small class="text-muted">by {{ $review->user->name }}</small></p>
                     </div>
@@ -55,13 +64,13 @@
                     @csrf
                     <div class="form-group">
                         <label for="rating">Rating</label>
-                        <select class="form-control" id="rating" name="rating" required>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
+                        <div class="rating">
+                            <input type="radio" name="rating" id="rating-5" value="5"><label for="rating-5" class="fas fa-star"></label>
+                            <input type="radio" name="rating" id="rating-4" value="4"><label for="rating-4" class="fas fa-star"></label>
+                            <input type="radio" name="rating" id="rating-3" value="3"><label for="rating-3" class="fas fa-star"></label>
+                            <input type="radio" name="rating" id="rating-2" value="2"><label for="rating-2" class="fas fa-star"></label>
+                            <input type="radio" name="rating" id="rating-1" value="1"><label for="rating-1" class="fas fa-star"></label>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="comment">Comment</label>
@@ -75,3 +84,32 @@
         </div>
     </div>
 @endsection
+
+@push('styles')
+    <style>
+        .book-image {
+            height: 100%;
+            object-fit: cover;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+        .rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: center;
+        }
+        .rating input {
+            display: none;
+        }
+        .rating label {
+            font-size: 2rem;
+            color: #ddd;
+            cursor: pointer;
+        }
+        .rating input:checked ~ label,
+        .rating label:hover,
+        .rating label:hover ~ label {
+            color: #ffc107;
+        }
+    </style>
+@endpush
