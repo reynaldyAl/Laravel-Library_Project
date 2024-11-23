@@ -104,7 +104,7 @@
         .rating {
             display: flex;
             flex-direction: row-reverse;
-            justify-content: center;
+            justify-content: flex-end;
         }
         .rating input {
             display: none;

@@ -6,7 +6,8 @@
     <title>Library Management System</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">\
+    @stack('styles')
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -52,5 +53,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="{{ asset('node_modules/flowbite/dist/flowbite.min.js') }}"></script> <!-- Include the Flowbite JS file -->
+     
 </body>
 </html>
