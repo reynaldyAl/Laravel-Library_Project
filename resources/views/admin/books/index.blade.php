@@ -1,11 +1,10 @@
-<!-- resources/views/admin/books/index.blade.php -->
 @extends('layouts.app')
 
 @section('content')
     <div class="container mt-5">
-        <h1>Books</h1>
+        <h1>Manage Books</h1>
         <a href="{{ route('admin.books.create') }}" class="btn btn-primary mb-3">Add New Book</a>
-        <table class="table">
+        <table id="books-table" class="table table-striped">
             <thead>
                 <tr>
                     <th>Title</th>
@@ -13,6 +12,8 @@
                     <th>Publisher</th>
                     <th>Published Year</th>
                     <th>Category</th>
+                    <th>Available Copies</th>
+                    <th>Total Copies</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -24,9 +25,11 @@
                         <td>{{ $book->publisher }}</td>
                         <td>{{ $book->published_year }}</td>
                         <td>{{ $book->category->name ?? 'N/A' }}</td>
+                        <td>{{ $book->available_copies }}</td>
+                        <td>{{ $book->total_copies }}</td>
                         <td>
                             <a href="{{ route('admin.books.edit', $book->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{ route('admin.books.destroy', $book->id) }}" method="POST" style="display:inline;">
+                            <form action="{{ route('admin.books.destroy', $book->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -38,3 +41,11 @@
         </table>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('#books-table').DataTable();
+        });
+    </script>
+@endpush

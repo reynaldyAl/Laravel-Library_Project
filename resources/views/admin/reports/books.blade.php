@@ -3,10 +3,7 @@
 @section('content')
     <div class="container mt-5">
         <h1>Books Report</h1>
-        <p>Here you can view various reports and statistics about books.</p>
-
-        <h2>Books</h2>
-        <table class="table">
+        <table id="books-report-table" class="table table-striped">
             <thead>
                 <tr>
                     <th>Title</th>
@@ -34,3 +31,11 @@
         </table>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('#books-report-table').DataTable();
+        });
+    </script>
+@endpush

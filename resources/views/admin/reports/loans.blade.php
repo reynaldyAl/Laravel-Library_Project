@@ -3,10 +3,7 @@
 @section('content')
     <div class="container mt-5">
         <h1>Loans Report</h1>
-        <p>Here you can view various reports and statistics about loans.</p>
-
-        <h2>Loans</h2>
-        <table class="table">
+        <table id="loans-report-table" class="table table-striped">
             <thead>
                 <tr>
                     <th>Book Title</th>
@@ -30,3 +27,11 @@
         </table>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('#loans-report-table').DataTable();
+        });
+    </script>
+@endpush
