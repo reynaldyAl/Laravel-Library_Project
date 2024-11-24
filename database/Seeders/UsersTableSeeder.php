@@ -40,6 +40,16 @@ class UsersTableSeeder extends Seeder
             ]
         );
 
-        // Tambahkan pengguna lain sesuai kebutuhan
+        DB::table('users')->updateOrInsert(
+            ['id' => 3],
+            [
+                'name' => 'Keyza Evelyn',
+                'email' => 'evelyn@unpad.ac.id',
+                'password' => Hash::make('password'),
+                'role_id' => 3, // mahasiswa
+            ]
+        );
+
+        
     }
 }

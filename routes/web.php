@@ -16,6 +16,7 @@ use App\Http\Controllers\mahasiswa\MahasiswaDashboardController;
 use App\Http\Controllers\mahasiswa\MahasiswaLoanController;
 use App\Http\Controllers\mahasiswa\MahasiswaReviewController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,6 +38,10 @@ Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 // Registration Routes
 Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('register', [RegisterController::class, 'register']);
+
+Route::get('profile', [UserController::class, 'showProfile'])->name('profile.show');
+Route::get('profile/edit', [UserController::class, 'editProfile'])->name('profile.edit');
+Route::put('profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
 
 // Admin Routes
 Route::prefix('admin')->name('admin.')->group(function () {
