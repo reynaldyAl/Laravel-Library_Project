@@ -48,7 +48,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::resource('books', AdminBookController::class);
     Route::resource('users', AdminUserController::class);
-    Route::get('reports', [AdminReportController::class, 'index'])->name('reports.index');
+    // Route::get('reports', [AdminReportController::class, 'index'])->name('reports.index');
+    Route::get('reports/books', [AdminReportController::class, 'books'])->name('reports.books');
+    Route::get('reports/loans', [AdminReportController::class, 'loans'])->name('reports.loans');
 });
 
 // Staff Routes

@@ -9,10 +9,15 @@ use Illuminate\Http\Request;
 
 class AdminReportController extends Controller
 {
-    public function index()
+    public function books()
     {
         $books = Book::all();
+        return view('admin.reports.books', compact('books'));
+    }
+
+    public function loans()
+    {
         $loans = Loan::with('book', 'user')->get();
-        return view('admin.reports.index', compact('books', 'loans'));
+        return view('admin.reports.loans', compact('loans'));
     }
 }
