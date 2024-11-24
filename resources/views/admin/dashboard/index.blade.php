@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-3">
                 <!-- Sidebar -->
-                <div class="d-flex flex-column p-3 bg-light" style="height: 100vh;">
+                <div class="d-flex flex-column p-3 bg-light border" style="height: 100vh;">
                     <h5 class="my-3">Admin Dashboard</h5>
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item">
@@ -27,62 +27,59 @@
                 </div>
             </div>
             <div class="col-md-9">
-                <h1 class="text-2xl font-bold mb-4">Admin Dashboard</h1>
-                <p>Welcome to the admin dashboard. Here you can manage books, users, and view reports.</p>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <h5 class="card-title">Manage Books</h5>
-                                <p class="card-text">Add, edit, and delete books in the library.</p>
-                                <a href="{{ route('admin.books.index') }}" class="btn btn-primary">Go to Books</a>
+                <div class="p-3 border bg-white">
+                    <h1 class="text-2xl font-bold mb-4">Admin Dashboard</h1>
+                    <p>Welcome to the admin dashboard. Here you can manage books, users, and view reports.</p>
+                    
+                    <div class="row">
+                        <div class="col-md-3 mb-4">
+                            <div class="p-3 border bg-light text-center">
+                                <img src="https://img.icons8.com/ios-filled/50/000000/book.png" alt="Books Icon">
+                                <h5 class="card-title mt-2">Total Books</h5>
+                                <p class="card-text">{{ $totalBooks }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-4">
+                            <div class="p-3 border bg-light text-center">
+                                <img src="https://img.icons8.com/ios-filled/50/000000/admin-settings-male.png" alt="Admin Icon">
+                                <h5 class="card-title mt-2">Total Admins</h5>
+                                <p class="card-text">{{ $totalAdmins }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-4">
+                            <div class="p-3 border bg-light text-center">
+                                <img src="https://img.icons8.com/ios-filled/50/000000/staff.png" alt="Staff Icon">
+                                <h5 class="card-title mt-2">Total Staff</h5>
+                                <p class="card-text">{{ $totalStaff }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-4">
+                            <div class="p-3 border bg-light text-center">
+                                <img src="https://img.icons8.com/ios-filled/50/000000/student-male.png" alt="Mahasiswa Icon">
+                                <h5 class="card-title mt-2">Total Mahasiswa</h5>
+                                <p class="card-text">{{ $totalMahasiswa }}</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <h5 class="card-title">Manage Users</h5>
-                                <p class="card-text">Add, edit, and delete users in the system.</p>
-                                <a href="{{ route('admin.users.index') }}" class="btn btn-primary">Go to Users</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <h5 class="card-title">View Reports</h5>
-                                <p class="card-text">View various reports and statistics.</p>
-                                <a href="{{ route('admin.reports.books') }}" class="btn btn-primary">Go to Books Report</a>
-                                <a href="{{ route('admin.reports.loans') }}" class="btn btn-primary">Go to Loans Report</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card mb-4">
-                            <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="p-3 border bg-light">
+                                <h5 class="card-title">Users by Role</h5>
+                                <canvas id="usersChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="p-3 border bg-light">
                                 <h5 class="card-title">Books Overview</h5>
                                 <canvas id="booksChart"></canvas>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <h5 class="card-title">Users Overview</h5>
-                                <canvas id="usersChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card mb-4">
-                            <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12 mb-4">
+                            <div class="p-3 border bg-light">
                                 <h5 class="card-title">Loans Overview</h5>
                                 <canvas id="loansChart"></canvas>
                             </div>
@@ -95,6 +92,7 @@
 @endsection
 
 @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
     <script>
         $(document).ready(function() {
             // Books Chart
@@ -168,24 +166,43 @@
 
             // Loans Chart
             var ctxLoans = document.getElementById('loansChart').getContext('2d');
+            var loansLabels = {!! json_encode($loansByDate->keys()) !!};
+            var loansData = {!! json_encode($loansByDate->values()) !!};
+            console.log('Loans Labels:', loansLabels);
+            console.log('Loans Data:', loansData);
+
             var loansChart = new Chart(ctxLoans, {
                 type: 'line',
                 data: {
-                    labels: {!! json_encode($loansByMonth->keys()->map(function($month) {
-                        return DateTime::createFromFormat('!m', $month)->format('F');
-                    })) !!},
+                    labels: loansLabels,
                     datasets: [{
                         label: 'Number of Loans',
-                        data: {!! json_encode($loansByMonth->values()) !!},
+                        data: loansData,
                         fill: false,
                         borderColor: 'rgba(75, 192, 192, 1)',
-                        tension: 0.1
+                        tension: 0.1,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)'
                     }]
                 },
                 options: {
                     scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: 'day',
+                                tooltipFormat: 'll'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Date'
+                            }
+                        },
                         y: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Loans'
+                            }
                         }
                     }
                 }

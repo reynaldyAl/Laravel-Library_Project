@@ -21,6 +21,9 @@ class AdminDashboardController extends Controller
 
         $categories = Category::whereIn('id', $booksByCategory->keys())->pluck('name', 'id');
 
+        // Ambil total buku
+        $totalBooks = Book::count();
+
         // Ambil data pengguna berdasarkan peran
         $usersByRole = User::selectRaw('role_id, COUNT(*) as count')
             ->groupBy('role_id')
@@ -28,11 +31,17 @@ class AdminDashboardController extends Controller
 
         $roles = Role::whereIn('id', $usersByRole->keys())->pluck('name', 'id');
 
-        // Ambil data pinjaman berdasarkan bulan
-        $loansByMonth = Loan::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
-            ->groupBy('month')
-            ->pluck('count', 'month');
+        // Ambil total pengguna berdasarkan peran
+        $totalAdmins = User::where('role_id', Role::where('name', 'admin')->first()->id)->count();
+        $totalStaff = User::where('role_id', Role::where('name', 'staff')->first()->id)->count();
+        $totalMahasiswa = User::where('role_id', Role::where('name', 'mahasiswa')->first()->id)->count();
 
-        return view('admin.dashboard.index', compact('booksByCategory', 'categories', 'usersByRole', 'roles', 'loansByMonth'));
+        // Ambil data pinjaman berdasarkan tanggal pinjaman
+        $loansByDate = Loan::selectRaw('DATE(loan_date) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('count', 'date');
+
+        return view('admin.dashboard.index', compact('booksByCategory', 'categories', 'totalBooks', 'totalAdmins', 'totalStaff', 'totalMahasiswa', 'usersByRole', 'roles', 'loansByDate'));
     }
 }

@@ -115,3 +115,17 @@
         padding: 10px 20px;
     }
 }
+
+/* Kelas Kustom untuk Dashboard */
+.custom-card {
+    padding: 1.5rem;
+    border: 1px solid #ddd;
+    background-color: #0080ff;
+    border-radius: 0.25rem;
+}
+
+.custom-card-title {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
