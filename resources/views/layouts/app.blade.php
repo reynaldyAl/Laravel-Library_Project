@@ -63,6 +63,18 @@
                             </form>
                         </div>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="notificationsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge badge-danger" id="notificationCount">0</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationsDropdown">
+                            <a class="dropdown-item" href="{{ route('notifications.index') }}">View All Notifications</a>
+                            <div id="notificationsList">
+                                <p class="dropdown-item">No new notifications</p>
+                            </div>
+                        </div>
+                    </li>
                 @endguest
             </ul>
         </div>
@@ -80,6 +92,46 @@
     <script src="https://cdn.datatables.net/1.10.21/js/dataTables.tailwind.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchNotifications();
+
+            function fetchNotifications() {
+                fetch('{{ route('notifications.index') }}')
+                    .then(response => response.json())
+                    .then(data => {
+                        const notificationsList = document.getElementById('notificationsList');
+                        const notificationCount = document.getElementById('notificationCount');
+                        notificationsList.innerHTML = '';
+                        if (data.length > 0) {
+                            notificationCount.textContent = data.length;
+                            data.forEach(notification => {
+                                const notificationItem = document.createElement('a');
+                                notificationItem.href = '#';
+                                notificationItem.classList.add('dropdown-item');
+                                notificationItem.textContent = notification.message;
+                                notificationItem.addEventListener('click', () => markAsRead(notification.id));
+                                notificationsList.appendChild(notificationItem);
+                            });
+                        } else {
+                            notificationCount.textContent = '0';
+                            notificationsList.innerHTML = '<p class="dropdown-item">No new notifications</p>';
+                        }
+                    });
+            }
+
+            function markAsRead(id) {
+                fetch('{{ route('notifications.markAsRead') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ id: id })
+                }).then(() => fetchNotifications());
+            }
+        });
+    </script>
     @stack('scripts')
 </body>
 </html>

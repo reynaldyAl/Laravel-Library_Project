@@ -19,11 +19,17 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-
+use App\Http\Controllers\NotificationController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('home/{book}', [HomeController::class, 'show'])->name('home.detail');
 Route::get('catalog', [HomeController::class, 'catalog'])->name('home.catalog');
+
+
+
+
+Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
 
 // reviews
 Route::post('reviews/{book}', [ReviewController::class, 'store'])->name('reviews.store');
