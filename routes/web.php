@@ -20,6 +20,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('home/{book}', [HomeController::class, 'show'])->name('home.detail');
 Route::get('catalog', [HomeController::class, 'catalog'])->name('home.catalog');

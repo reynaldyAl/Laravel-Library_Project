@@ -66,13 +66,13 @@
                         <div class="col-md-6 mb-4">
                             <div class="p-3 border bg-light">
                                 <h5 class="card-title">Users by Role</h5>
-                                <canvas id="usersChart"></canvas>
+                                <div id="usersChart" style="height: 300px;"></div>
                             </div>
                         </div>
                         <div class="col-md-6 mb-4">
                             <div class="p-3 border bg-light">
                                 <h5 class="card-title">Books Overview</h5>
-                                <canvas id="booksChart"></canvas>
+                                <div id="booksChart" style="height: 300px;"></div>
                             </div>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
                         <div class="col-md-12 mb-4">
                             <div class="p-3 border bg-light">
                                 <h5 class="card-title">Loans Overview</h5>
-                                <canvas id="loansChart"></canvas>
+                                <div id="loansChart" style="height: 400px;"></div>
                             </div>
                         </div>
                     </div>
@@ -89,124 +89,22 @@
             </div>
         </div>
     </div>
+
+    <!-- Data dari server -->
+    <script id="usersData" type="application/json">
+        {!! json_encode($roles->map(function($role, $key) use ($usersByRole) {
+            return ['value' => $usersByRole[$key], 'name' => $role];
+        })->values()) !!}
+    </script>
+    <script id="booksData" type="application/json">
+        {!! json_encode(['categories' => $categories->values(), 'counts' => $booksByCategory->values()]) !!}
+    </script>
+    <script id="loansData" type="application/json">
+        {!! json_encode(['dates' => $loansByDate->keys(), 'counts' => $loansByDate->values()]) !!}
+    </script>
 @endsection
 
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
-    <script>
-        $(document).ready(function() {
-            // Books Chart
-            var ctxBooks = document.getElementById('booksChart').getContext('2d');
-            var booksChart = new Chart(ctxBooks, {
-                type: 'bar',
-                data: {
-                    labels: {!! json_encode($categories->values()) !!},
-                    datasets: [{
-                        label: 'Number of Books',
-                        data: {!! json_encode($booksByCategory->values()) !!},
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-
-            // Users Chart
-            var ctxUsers = document.getElementById('usersChart').getContext('2d');
-            var usersChart = new Chart(ctxUsers, {
-                type: 'pie',
-                data: {
-                    labels: {!! json_encode($roles->values()) !!},
-                    datasets: [{
-                        label: 'Number of Users',
-                        data: {!! json_encode($usersByRole->values()) !!},
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    var label = context.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    if (context.parsed !== null) {
-                                        label += context.parsed;
-                                    }
-                                    return label;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-
-            // Loans Chart
-            var ctxLoans = document.getElementById('loansChart').getContext('2d');
-            var loansLabels = {!! json_encode($loansByDate->keys()) !!};
-            var loansData = {!! json_encode($loansByDate->values()) !!};
-            console.log('Loans Labels:', loansLabels);
-            console.log('Loans Data:', loansData);
-
-            var loansChart = new Chart(ctxLoans, {
-                type: 'line',
-                data: {
-                    labels: loansLabels,
-                    datasets: [{
-                        label: 'Number of Loans',
-                        data: loansData,
-                        fill: false,
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        tension: 0.1,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)'
-                    }]
-                },
-                options: {
-                    scales: {
-                        x: {
-                            type: 'time',
-                            time: {
-                                unit: 'day',
-                                tooltipFormat: 'll'
-                            },
-                            title: {
-                                display: true,
-                                text: 'Date'
-                            }
-                        },
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Number of Loans'
-                            }
-                        }
-                    }
-                }
-            });
-        });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <script src="{{ asset('js/custom.js') }}"></script>
 @endpush
