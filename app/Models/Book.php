@@ -15,6 +15,7 @@ class Book extends Model
         'available_copies',
         'total_copies',
         'image_path',
+        'synopsis',
     ];
 
         public function category()

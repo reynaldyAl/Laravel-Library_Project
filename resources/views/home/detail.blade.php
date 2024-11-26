@@ -24,6 +24,7 @@
                         <p class="card-text"><strong>Category:</strong> {{ $book->category->name ?? 'N/A' }}</p>
                         <p class="card-text"><strong>Available Copies:</strong> {{ $book->available_copies }}</p>
                         <p class="card-text"><strong>Total Copies:</strong> {{ $book->total_copies }}</p>
+                        <p class="card-text"><strong>Synopsis:</strong> {{ $book->synopsis }}</p>
 
                         <!-- Button untuk Pinjam Buku -->
                         @auth

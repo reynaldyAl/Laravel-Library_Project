@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\staff;
+namespace App\Http\Controllers\Staff;
 
 use App\Http\Controllers\Controller;
 use App\Models\Loan;
 use App\Models\LoanStatus;
 use App\Models\Notification;
+use App\Models\User;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -82,8 +84,8 @@ class StaffLoanController extends Controller
         $overdue_days = $return_date->diffInDays($due_date, false);
         $fine = 0;
 
-        if ($overdue_days > 0) {
-            $fine = ceil($overdue_days / 2) * 5000; // Denda 5000 per 2 hari
+        if ($overdue_days < 0) {
+            $fine = ceil(abs($overdue_days) / 2) * 5000; // Denda 5000 per 2 hari
         }
 
         // Kirim notifikasi ke mahasiswa
@@ -93,12 +95,17 @@ class StaffLoanController extends Controller
             'read_status' => false,
         ]);
 
-        // Kirim notifikasi ke staff
-        Notification::create([
-            'user_id' => $loan->user_id,
-            'message' => 'Mahasiswa ' . $loan->user->name . ' telah mengembalikan buku "' . $loan->book->title . '".',
-            'read_status' => false,
-        ]);
+        // Kirim notifikasi ke admin
+        $adminRole = Role::where('name', 'admin')->first();
+        $adminUsers = $adminRole->users;
+
+        foreach ($adminUsers as $admin) {
+            Notification::create([
+                'user_id' => $admin->id,
+                'message' => 'Mahasiswa ' . $loan->user->name . ' telah mengembalikan buku "' . $loan->book->title . '".',
+                'read_status' => false,
+            ]);
+        }
 
         return redirect()->route('staff.loans.index')->with('success', 'Book return confirmed successfully.');
     }

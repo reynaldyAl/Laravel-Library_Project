@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\mahasiswa;
+namespace App\Http\Controllers\Mahasiswa;
 
 use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\Loan;
 use App\Models\LoanStatus;
 use App\Models\Notification;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -85,11 +86,16 @@ class MahasiswaLoanController extends Controller
         $loan = Loan::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
 
         // Kirim notifikasi ke staff
-        Notification::create([
-            'user_id' => Auth::id(),
-            'message' => 'Mahasiswa ' . Auth::user()->name . ' ingin mengembalikan buku "' . $loan->book->title . '".',
-            'read_status' => false,
-        ]);
+        $staffRole = Role::where('name', 'staff')->first();
+        $staffUsers = $staffRole->users;
+
+        foreach ($staffUsers as $staff) {
+            Notification::create([
+                'user_id' => $staff->id,
+                'message' => 'Mahasiswa ' . Auth::user()->name . ' ingin mengembalikan buku "' . $loan->book->title . '".',
+                'read_status' => false,
+            ]);
+        }
 
         // Update status pinjaman menjadi "waiting for return confirmation"
         $waitingReturnStatus = LoanStatus::where('name', 'waiting')->first();

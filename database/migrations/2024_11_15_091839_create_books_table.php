@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('available_copies')->default(0);
             $table->integer('total_copies')->default(0);
             $table->string('image_path')->nullable(); // Menyimpan path file gambar
+            $table->text('synopsis')->nullable();
             $table->timestamps();
         });
     }

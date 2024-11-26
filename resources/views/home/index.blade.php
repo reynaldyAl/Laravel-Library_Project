@@ -35,6 +35,7 @@
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $book->title }}</h5>
                                         <p class="card-text">{{ $book->author }}</p>
+                                        <p class="card-text">{{ Str::limit($book->synopsis, 100) }}</p> <!-- Menampilkan sinopsis -->
                                         <p class="card-text">
                                             Rating: 
                                             @for ($i = 1; $i <= 5; $i++)
@@ -55,8 +56,6 @@
             @endif
         </div>
 
-        
-
         <!-- Buku Populer -->
         <h2>Popular Books</h2>
         <div class="row">
@@ -74,6 +73,7 @@
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $book->title }}</h5>
                                         <p class="card-text">{{ $book->author }}</p>
+                                        <p class="card-text">{{ Str::limit($book->synopsis, 100) }}</p> <!-- Menampilkan sinopsis -->
                                         <p class="card-text">
                                             Rating: 
                                             @for ($i = 1; $i <= 5; $i++)

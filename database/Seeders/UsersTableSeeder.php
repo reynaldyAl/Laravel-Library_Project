@@ -41,7 +41,7 @@ class UsersTableSeeder extends Seeder
         );
 
         DB::table('users')->updateOrInsert(
-            ['id' => 3],
+            ['id' => 4],
             [
                 'name' => 'Keyza Evelyn',
                 'email' => 'evelyn@unpad.ac.id',
@@ -49,7 +49,14 @@ class UsersTableSeeder extends Seeder
                 'role_id' => 3, // mahasiswa
             ]
         );
-
-        
+        DB::table('users')->updateOrInsert(
+            ['id' => 5],
+            [
+                'name' => 'Retno Eka',
+                'email' => 'folstars@ui.ac.id',
+                'password' => Hash::make('password'),
+                'role_id' => 2, // staff
+            ]
+        );
     }
 }

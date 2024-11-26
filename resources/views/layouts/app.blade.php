@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.tailwind.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
     @stack('styles')
 </head>
 <body>
@@ -85,11 +85,11 @@
     </main>
 
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.tailwind.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
     <script>
@@ -97,20 +97,19 @@
             fetchNotifications();
 
             function fetchNotifications() {
-                fetch('{{ route('notifications.index') }}')
+                fetch('{{ route('notifications.fetch') }}')
                     .then(response => response.json())
                     .then(data => {
                         const notificationsList = document.getElementById('notificationsList');
                         const notificationCount = document.getElementById('notificationCount');
                         notificationsList.innerHTML = '';
-                        if (data.length > 0) {
-                            notificationCount.textContent = data.length;
-                            data.forEach(notification => {
+                        if (data.notifications.length > 0) {
+                            notificationCount.textContent = data.unreadCount;
+                            data.notifications.forEach(notification => {
                                 const notificationItem = document.createElement('a');
                                 notificationItem.href = '#';
                                 notificationItem.classList.add('dropdown-item');
                                 notificationItem.textContent = notification.message;
-                                notificationItem.addEventListener('click', () => markAsRead(notification.id));
                                 notificationsList.appendChild(notificationItem);
                             });
                         } else {
@@ -120,16 +119,21 @@
                     });
             }
 
-            function markAsRead(id) {
-                fetch('{{ route('notifications.markAsRead') }}', {
+            document.getElementById('notificationsDropdown').addEventListener('click', function() {
+                markAllAsRead();
+            });
+
+            function markAllAsRead() {
+                fetch('{{ route('notifications.markAllAsRead') }}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ id: id })
+                    }
                 }).then(() => fetchNotifications());
             }
+
+            setInterval(fetchNotifications, 60000); // Refresh notifications every 60 seconds
         });
     </script>
     @stack('scripts')

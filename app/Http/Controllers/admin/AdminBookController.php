@@ -39,6 +39,7 @@ class AdminBookController extends Controller
             'available_copies' => 'required|integer',
             'total_copies' => 'required|integer',
             'image_path' => 'required|image',
+            'synopsis' => 'required|string', // Validasi sinopsis
         ]);
 
         $image = $request->file('image_path');
@@ -54,6 +55,7 @@ class AdminBookController extends Controller
             'available_copies' => $request->available_copies,
             'total_copies' => $request->total_copies,
             'image_path' => 'images/' . $imageName,
+            'synopsis' => $request->synopsis, // Simpan sinopsis
         ]);
 
         return redirect()->route('admin.books.index')->with('success', 'Book created successfully.');
@@ -76,6 +78,7 @@ class AdminBookController extends Controller
             'available_copies' => 'required|integer',
             'total_copies' => 'required|integer',
             'image_path' => 'image',
+            'synopsis' => 'required|string', // Validasi sinopsis
         ]);
 
         if ($request->hasFile('image_path')) {
@@ -93,6 +96,7 @@ class AdminBookController extends Controller
             'category_id' => $request->category_id,
             'available_copies' => $request->available_copies,
             'total_copies' => $request->total_copies,
+            'synopsis' => $request->synopsis, // Simpan sinopsis
         ]);
 
         return redirect()->route('admin.books.index')->with('success', 'Book updated successfully.');

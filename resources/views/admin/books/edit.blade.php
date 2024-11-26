@@ -44,6 +44,10 @@
                 <input type="file" class="form-control-file" id="image_path" name="image_path">
                 <img src="{{ asset($book->image_path) }}" class="img-fluid mt-2" alt="{{ $book->title }}">
             </div>
+            <div class="form-group">
+                <label for="synopsis">Synopsis</label>
+                <textarea class="form-control" id="synopsis" name="synopsis" rows="5" required>{{ $book->synopsis }}</textarea>
+            </div>
             <button type="submit" class="btn btn-primary">Update Book</button>
         </form>
     </div>

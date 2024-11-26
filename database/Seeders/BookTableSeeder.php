@@ -19,14 +19,10 @@ class BookTableSeeder extends Seeder
             'available_copies' => 5,
             'total_copies' => 10,
             'image_path' => 'images/great_gatsby.jpg',
+            'synopsis' => 'A novel about the American dream and the roaring twenties.',
         ]);
 
-        Review::create([
-            'user_id' => 1,
-            'book_id' => $book1->id,
-            'rating' => 5,
-            'comment' => 'A classic novel with timeless themes.',
-        ]);
+
 
         $book2 = Book::create([
             'title' => 'To Kill a Mockingbird',
@@ -37,14 +33,10 @@ class BookTableSeeder extends Seeder
             'available_copies' => 3,
             'total_copies' => 7,
             'image_path' => 'images/to_kill_a_mockingbird.jpg',
+            'synopsis' => 'A powerful story about justice and morality in the American South.',
         ]);
 
-        Review::create([
-            'user_id' => 2,
-            'book_id' => $book2->id,
-            'rating' => 4,
-            'comment' => 'A powerful story about justice and morality.',
-        ]);
+
 
         $book3 = Book::create([
             'title' => '1984',
@@ -55,15 +47,35 @@ class BookTableSeeder extends Seeder
             'available_copies' => 4,
             'total_copies' => 8,
             'image_path' => 'images/1984.jpg',
+            'synopsis' => 'A chilling dystopian novel that remains relevant today.',
         ]);
 
-        Review::create([
-            'user_id' => 3,
-            'book_id' => $book3->id,
-            'rating' => 5,
-            'comment' => 'A chilling dystopian novel that remains relevant today.',
+        $book4 = Book::create([
+            'title' => 'Harry Potter and the Philosopher\'s Stone',
+            'author' => 'J.K. Rowling',
+            'publisher' => 'Bloomsbury',
+            'published_year' => 1997,
+            'category_id' => 3,
+            'available_copies' => 10,
+            'total_copies' => 15,
+            'image_path' => 'images/Harry_Potter.jpg',
+            'synopsis' => 'After all this time? Always.',
         ]);
 
-        // Tambahkan lebih banyak buku dan ulasan sesuai kebutuhan
+        
+
+        // add reviews
+        $book1->reviews()->createMany([
+            [
+                'user_id' => 1,
+                'rating' => 5,
+                'comment' => 'A classic novel that everyone should read.',
+            ],
+            [
+                'user_id' => 2,
+                'rating' => 4,
+                'comment' => 'A great book with a lot of depth.',
+            ],
+        ]);
     }
 }
