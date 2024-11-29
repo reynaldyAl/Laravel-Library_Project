@@ -70,6 +70,8 @@ Route::prefix('staff')->name('staff.')->group(function () {
     Route::post('loans/{loan}/approve', [StaffLoanController::class, 'approveLoan'])->name('loans.approve');
     Route::post('loans/{loan}/reject', [StaffLoanController::class, 'rejectLoan'])->name('loans.reject');
     Route::post('loans/{loan}/confirm-return', [StaffLoanController::class, 'confirmReturn'])->name('loans.confirmReturn');
+    Route::get('reports/books', [StaffReportController::class, 'books'])->name('reports.books');
+    Route::get('reports/loans', [StaffReportController::class, 'loans'])->name('reports.loans');
 });
 
 // Mahasiswa Routes

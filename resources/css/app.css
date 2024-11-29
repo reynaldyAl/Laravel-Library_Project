@@ -1,6 +1,11 @@
-/* Ensure Tailwind CSS is properly installed and configured */
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
-
+/* Import Flowbite */
 @import 'flowbite';
+
+/* Import Tailwind CSS base styles */
+@tailwind base;
+
+/* Import Tailwind CSS components */
+@tailwind components;
+
+/* Import Tailwind CSS utilities */
+@tailwind utilities;
