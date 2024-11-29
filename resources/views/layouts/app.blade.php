@@ -12,13 +12,19 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
     <link href="{{ mix('css/app.css') }}" rel="stylesheet"> {{-- tailwinds --}}
 
+    <style>
+        .navbar-toggler-icon {
+            color: rgb(234, 209, 47); /* Mengubah warna ikon toggle menjadi kuning */
+        }
+    </style>
+
     @stack('styles')
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-custom">
         <a class="navbar-brand" href="{{ route('home') }}">Library</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+            <i class="fas fa-bars navbar-toggler-icon"></i> <!-- Ganti dengan ikon Font Awesome -->
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">

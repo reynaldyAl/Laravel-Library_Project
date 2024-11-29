@@ -3,43 +3,49 @@
 @section('content')
     <div class="container-fluid mt-5">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-12">
+                <!-- Sidebar Toggle Button -->
+                <button class="btn btn-primary d-md-none mb-3" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="col-md-3 col-sm-12" id="sidebarContainer">
                 <!-- Sidebar -->
-                <div class="d-flex flex-column p-3 bg-light border" style="height: 100vh;">
+                <div class="d-flex flex-column p-3 bg-light border" id="sidebar" style="min-width: 250px;">
                     <h5 class="my-3">Staff Dashboard</h5>
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item">
                             <a href="{{ route('staff.dashboard') }}" class="nav-link active">Dashboard</a>
                         </li>
-                        <li class="nav-item">
+                        <li>
                             <a href="{{ route('staff.books.index') }}" class="nav-link">Manage Books</a>
                         </li>
-                        <li class="nav-item">
+                        <li>
                             <a href="{{ route('staff.loans.index') }}" class="nav-link">Manage Loans</a>
                         </li>
-                        <li class="nav-item">
+                        <li>
                             <a href="{{ route('staff.reports.books') }}" class="nav-link">Books Report</a>
                         </li>
-                        <li class="nav-item">
+                        <li>
                             <a href="{{ route('staff.reports.loans') }}" class="nav-link">Loans Report</a>
                         </li>
                     </ul>
                 </div>
             </div>
-            <div class="col-md-9">
+            <div class="col-md-9 col-sm-12" id="mainContent">
                 <div class="p-3 border bg-white">
                     <h1 class="text-2xl font-bold mb-4">Staff Dashboard</h1>
                     <p>Welcome to the staff dashboard. Here you can manage books and view reports.</p>
                     
                     <div class="row">
-                        <div class="col-md-6 mb-4">
+                        <div class="col-md-6 col-sm-12 mb-4">
                             <div class="p-3 border bg-light text-center">
                                 <img src="https://img.icons8.com/ios-filled/50/000000/book.png" alt="Books Icon">
                                 <h5 class="card-title mt-2">Total Books</h5>
                                 <p class="card-text">{{ $totalBooks }}</p>
                             </div>
                         </div>
-                        <div class="col-md-6 mb-4">
+                        <div class="col-md-6 col-sm-12 mb-4">
                             <div class="p-3 border bg-light text-center">
                                 <img src="https://img.icons8.com/ios-filled/50/000000/student-male.png" alt="Mahasiswa Icon">
                                 <h5 class="card-title mt-2">Total Mahasiswa</h5>
@@ -49,25 +55,25 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6 mb-4">
+                        <div class="col-md-6 col-sm-12 mb-4">
                             <div class="p-3 border bg-light">
                                 <h5 class="card-title">Users by Role</h5>
-                                <div id="usersChart" style="height: 300px;"></div>
+                                <div id="usersChart" class="chart-container" style="height: 300px;"></div>
                             </div>
                         </div>
-                        <div class="col-md-6 mb-4">
+                        <div class="col-md-6 col-sm-12 mb-4">
                             <div class="p-3 border bg-light">
                                 <h5 class="card-title">Books Overview</h5>
-                                <div id="booksChart" style="height: 300px;"></div>
+                                <div id="booksChart" class="chart-container" style="height: 300px;"></div>
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-md-12 mb-4">
+                        <div class="col-12 mb-4">
                             <div class="p-3 border bg-light">
                                 <h5 class="card-title">Loans Overview</h5>
-                                <div id="loansChart" style="height: 400px;"></div>
+                                <div id="loansChart" class="chart-container" style="height: 400px;"></div>
                             </div>
                         </div>
                     </div>
@@ -89,6 +95,28 @@
         {!! json_encode(['dates' => $loansByDate->keys(), 'counts' => $loansByDate->values()]) !!}
     </script>
 @endsection
+
+@push('styles')
+    <style>
+        .chart-container {
+            width: 100%;
+            height: 100%;
+        }
+        #sidebarContainer {
+            transition: max-height 0.3s ease;
+        }
+        #sidebarContainer.collapsed {
+            max-height: 0;
+            overflow: hidden;
+        }
+        #mainContent {
+            transition: margin-top 0.3s ease;
+        }
+        #mainContent.expanded {
+            margin-top: 0;
+        }
+    </style>
+@endpush
 
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
@@ -177,6 +205,21 @@
             usersChart.setOption(usersOption);
             booksChart.setOption(booksOption);
             loansChart.setOption(loansOption);
+
+            // Make charts responsive
+            window.addEventListener('resize', function() {
+                usersChart.resize();
+                booksChart.resize();
+                loansChart.resize();
+            });
+
+            // Toggle sidebar
+            document.getElementById('sidebarToggle').addEventListener('click', function () {
+                var sidebarContainer = document.getElementById('sidebarContainer');
+                var mainContent = document.getElementById('mainContent');
+                sidebarContainer.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+            });
         });
     </script>
 @endpush

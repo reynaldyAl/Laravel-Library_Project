@@ -3,9 +3,15 @@
 @section('content')
     <div class="container-fluid mt-5">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-12">
+                <!-- Sidebar Toggle Button -->
+                <button class="btn btn-primary d-md-none mb-3" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="col-md-3 col-sm-12" id="sidebarContainer">
                 <!-- Sidebar -->
-                <div class="d-flex flex-column p-3 bg-light border" style="height: 100vh;">
+                <div class="d-flex flex-column p-3 bg-light border" id="sidebar">
                     <h5 class="my-3">Admin Dashboard</h5>
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item">
@@ -26,34 +32,34 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-9">
+            <div class="col-md-9 col-sm-12" id="mainContent">
                 <div class="p-3 border bg-white">
                     <h1 class="text-2xl font-bold mb-4">Admin Dashboard</h1>
                     <p>Welcome to the admin dashboard. Here you can manage books, users, and view reports.</p>
                     
                     <div class="row">
-                        <div class="col-md-3 mb-4">
+                        <div class="col-md-3 col-sm-6 mb-4">
                             <div class="p-3 border bg-light text-center">
                                 <img src="https://img.icons8.com/ios-filled/50/000000/book.png" alt="Books Icon">
                                 <h5 class="card-title mt-2">Total Books</h5>
                                 <p class="card-text">{{ $totalBooks }}</p>
                             </div>
                         </div>
-                        <div class="col-md-3 mb-4">
+                        <div class="col-md-3 col-sm-6 mb-4">
                             <div class="p-3 border bg-light text-center">
                                 <img src="https://img.icons8.com/ios-filled/50/000000/admin-settings-male.png" alt="Admin Icon">
                                 <h5 class="card-title mt-2">Total Admins</h5>
                                 <p class="card-text">{{ $totalAdmins }}</p>
                             </div>
                         </div>
-                        <div class="col-md-3 mb-4">
+                        <div class="col-md-3 col-sm-6 mb-4">
                             <div class="p-3 border bg-light text-center">
                                 <img src="https://img.icons8.com/ios-filled/50/000000/staff.png" alt="Staff Icon">
                                 <h5 class="card-title mt-2">Total Staff</h5>
                                 <p class="card-text">{{ $totalStaff }}</p>
                             </div>
                         </div>
-                        <div class="col-md-3 mb-4">
+                        <div class="col-md-3 col-sm-6 mb-4">
                             <div class="p-3 border bg-light text-center">
                                 <img src="https://img.icons8.com/ios-filled/50/000000/student-male.png" alt="Mahasiswa Icon">
                                 <h5 class="card-title mt-2">Total Mahasiswa</h5>
@@ -63,25 +69,25 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6 mb-4">
+                        <div class="col-md-6 col-sm-12 mb-4">
                             <div class="p-3 border bg-light">
                                 <h5 class="card-title">Users by Role</h5>
-                                <div id="usersChart" style="height: 300px;"></div>
+                                <div id="usersChart" class="chart-container" style="height: 300px;"></div>
                             </div>
                         </div>
-                        <div class="col-md-6 mb-4">
+                        <div class="col-md-6 col-sm-12 mb-4">
                             <div class="p-3 border bg-light">
                                 <h5 class="card-title">Books Overview</h5>
-                                <div id="booksChart" style="height: 300px;"></div>
+                                <div id="booksChart" class="chart-container" style="height: 300px;"></div>
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-md-12 mb-4">
+                        <div class="col-12 mb-4">
                             <div class="p-3 border bg-light">
                                 <h5 class="card-title">Loans Overview</h5>
-                                <div id="loansChart" style="height: 400px;"></div>
+                                <div id="loansChart" class="chart-container" style="height: 400px;"></div>
                             </div>
                         </div>
                     </div>
@@ -104,7 +110,130 @@
     </script>
 @endsection
 
+@push('styles')
+    <style>
+        .chart-container {
+            width: 100%;
+            height: 100%;
+        }
+        #sidebarContainer {
+            transition: max-height 0.3s ease;
+        }
+        #sidebarContainer.collapsed {
+            max-height: 0;
+            overflow: hidden;
+        }
+        #mainContent {
+            transition: margin-top 0.3s ease;
+        }
+        #mainContent.expanded {
+            margin-top: 0;
+        }
+    </style>
+@endpush
+
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
-    <script src="{{ asset('js/custom.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var usersData = JSON.parse(document.getElementById('usersData').textContent);
+            var booksData = JSON.parse(document.getElementById('booksData').textContent);
+            var loansData = JSON.parse(document.getElementById('loansData').textContent);
+
+            var usersChart = echarts.init(document.getElementById('usersChart'));
+            var booksChart = echarts.init(document.getElementById('booksChart'));
+            var loansChart = echarts.init(document.getElementById('loansChart'));
+
+            var usersOption = {
+                title: {
+                    text: 'Users by Role'
+                },
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    top: '5%',
+                    left: 'center'
+                },
+                series: [
+                    {
+                        name: 'Users',
+                        type: 'pie',
+                        radius: '50%',
+                        data: usersData,
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+
+            var booksOption = {
+                title: {
+                    text: 'Books Overview'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: booksData.categories
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        data: booksData.counts,
+                        type: 'bar'
+                    }
+                ]
+            };
+
+            var loansOption = {
+                title: {
+                    text: 'Loans Overview'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: loansData.dates
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        data: loansData.counts,
+                        type: 'line'
+                    }
+                ]
+            };
+
+            usersChart.setOption(usersOption);
+            booksChart.setOption(booksOption);
+            loansChart.setOption(loansOption);
+
+            // Make charts responsive
+            window.addEventListener('resize', function() {
+                usersChart.resize();
+                booksChart.resize();
+                loansChart.resize();
+            });
+
+            // Toggle sidebar
+            document.getElementById('sidebarToggle').addEventListener('click', function () {
+                var sidebarContainer = document.getElementById('sidebarContainer');
+                var mainContent = document.getElementById('mainContent');
+                sidebarContainer.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+            });
+        });
+    </script>
 @endpush
