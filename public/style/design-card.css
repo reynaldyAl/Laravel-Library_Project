@@ -1,3 +1,8 @@
+
+html {
+    scroll-behavior: smooth;
+}
+
 /* Card Buku */
 .card {
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;

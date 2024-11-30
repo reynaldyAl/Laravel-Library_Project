@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
     <link href="{{ mix('css/app.css') }}" rel="stylesheet"> {{-- tailwinds --}}
 
-    <!-- Menambahkan Tailwind CSS melalui CDN hanya untuk halaman profil -->
     <style>
         .navbar-toggler-icon {
             color: rgb(234, 209, 47); /* Mengubah warna ikon toggle menjadi kuning */
@@ -29,6 +28,29 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+        .navbar {
+            background-color: #2d3748;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 10px 20px; 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+        }
+        .navbar-brand {
+            color: #FFD700;
+            font-weight: 600;
+            font-size: 1.5rem;
+        }
+        .navbar-nav .nav-link {
+            color: #fff;
+            font-weight: 400;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #FFD700;
+            transition: color 0.3s ease-in-out;
         }
     </style>
 
