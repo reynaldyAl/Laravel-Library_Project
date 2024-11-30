@@ -12,9 +12,23 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
     <link href="{{ mix('css/app.css') }}" rel="stylesheet"> {{-- tailwinds --}}
 
+    <!-- Menambahkan Tailwind CSS melalui CDN hanya untuk halaman profil -->
     <style>
         .navbar-toggler-icon {
             color: rgb(234, 209, 47); /* Mengubah warna ikon toggle menjadi kuning */
+        }
+        .profile-container .w-32 {
+            width: 8rem;
+            height: 8rem;
+            border-radius: 9999px;
+            overflow: hidden;
+            margin: 0 auto;
+            margin-top: 0.5rem;
+        }
+        .profile-container .object-cover {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
     </style>
 
@@ -55,8 +69,8 @@
                     </li>
                 @else
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="{{ Auth::user()->profile_image_url }}" alt="Profile Image" class="rounded-circle" width="30" height="30">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="{{ Auth::user()->profile_image_url }}" alt="Profile Image" class="rounded-circle mr-2" width="30" height="30">
                             {{ Auth::user()->name }}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
