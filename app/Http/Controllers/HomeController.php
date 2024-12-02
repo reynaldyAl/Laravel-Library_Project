@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -22,9 +23,19 @@ class HomeController extends Controller
                   ->orWhere('author', 'like', "%{$search}%");
         }
 
-        // Menampilkan buku terbaru dan populer
-        $books = $query->orderBy('created_at', 'desc')->take(10)->get();
-        $popularBooks = Book::withCount('loans')->orderBy('loans_count', 'desc')->take(10)->get();
+        // Menampilkan buku terbaru (ditambahkan dalam 3 hari terakhir)
+        $threeDaysAgo = Carbon::now()->subDays(3);
+        $books = $query->where('created_at', '>=', $threeDaysAgo)
+                       ->orderBy('created_at', 'desc')
+                       ->take(10)
+                       ->get();
+
+        // Menampilkan buku populer (tidak termasuk buku yang baru ditambahkan)
+        $popularBooks = Book::withCount('loans')
+                            ->whereNotIn('id', $books->pluck('id')->toArray())
+                            ->orderBy('loans_count', 'desc')
+                            ->take(10)
+                            ->get();
 
         return view('home.index', compact('books', 'popularBooks'));
     }

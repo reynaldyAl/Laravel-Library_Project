@@ -13,6 +13,7 @@
                     <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">Category</th>
                     <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">Available Copies</th>
                     <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">Total Copies</th>
+                    <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">Actions</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200 border border-gray-200">
@@ -25,6 +26,9 @@
                         <td class="px-4 py-2 whitespace-nowrap border border-gray-200">{{ $book->category->name ?? 'N/A' }}</td>
                         <td class="px-4 py-2 whitespace-nowrap border border-gray-200">{{ $book->available_copies }}</td>
                         <td class="px-4 py-2 whitespace-nowrap border border-gray-200">{{ $book->total_copies }}</td>
+                        <td class="px-4 py-2 whitespace-nowrap border border-gray-200">
+                            <a href="{{ route('mahasiswa.books.show', $book->id) }}" class="btn btn-primary btn-sm">View</a>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

@@ -10,6 +10,7 @@
                     <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">Rating</th>
                     <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">Comment</th>
                     <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">Date</th>
+                    <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">Actions</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200 border border-gray-200">
@@ -19,6 +20,9 @@
                         <td class="px-4 py-2 whitespace-nowrap border border-gray-200">{{ $review->rating }}</td>
                         <td class="px-4 py-2 whitespace-nowrap border border-gray-200">{{ $review->comment }}</td>
                         <td class="px-4 py-2 whitespace-nowrap border border-gray-200">{{ $review->created_at }}</td>
+                        <td class="px-4 py-2 whitespace-nowrap border border-gray-200">
+                            <a href="{{ route('reviews.edit', $review->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

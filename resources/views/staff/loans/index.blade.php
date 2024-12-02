@@ -17,7 +17,6 @@
                     <th>Expected Return Date</th>
                     <th>Due Date</th>
                     <th>Status</th>
-
                 </tr>
             </thead>
             <tbody>
@@ -30,15 +29,27 @@
                         <td>
                             @if($loan->loanStatus->name == 'returned')
                                 Return completed
+                            @elseif($loan->loanStatus->name == 'rejected')
+                                Approval rejected
+                            @elseif($loan->loanStatus->name == 'waiting')
+                                Loan application is waiting for approval
+                            @elseif($loan->loanStatus->name == 'Loan application is waiting for approval')
+                                Loan application is waiting for approval
                             @elseif($loan->is_approved)
                                 <span class="countdown text-success" data-loan-date="{{ $loan->loan_date }}" data-return-date="{{ $loan->return_date }}"></span>
                             @else
                                 Waiting for approval
                             @endif
                         </td>
-                        <td>{{ $loan->loanStatus->name }}</td>
                         <td>
-                            @if(!$loan->is_approved)
+                            @if($loan->loanStatus->name == 'waiting')
+                            waiting
+                            @elseif($loan->loanStatus->name == 'waiting for return confirmation')
+                                Loan application is waiting for approval
+                            @else
+                                {{ $loan->loanStatus->name }}
+                            @endif
+                            @if(!$loan->is_approved && $loan->loanStatus->name != 'rejected')
                                 <form action="{{ route('staff.loans.approve', $loan->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     <button type="submit" class="btn btn-success btn-sm">Approve</button>

@@ -91,7 +91,7 @@ class MahasiswaLoanController extends Controller
 
         foreach ($staffUsers as $staff) {
             Notification::create([
-                'user_id' => $staff->id,
+                'user_id' => $staff->id,    
                 'message' => 'Mahasiswa ' . Auth::user()->name . ' ingin mengembalikan buku "' . $loan->book->title . '".',
                 'read_status' => false,
             ]);
@@ -105,4 +105,4 @@ class MahasiswaLoanController extends Controller
 
         return redirect()->back()->with('success', 'Book return request sent successfully. Please wait for staff confirmation.');
     }
-}
+}   

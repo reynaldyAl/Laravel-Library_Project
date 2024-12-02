@@ -36,7 +36,7 @@
 
     <style>
         body {
-            background-color: #121212;
+            background-color: #040507;
             font-family: 'Poppins', sans-serif;
             color: #fff;
             overflow-x: hidden;

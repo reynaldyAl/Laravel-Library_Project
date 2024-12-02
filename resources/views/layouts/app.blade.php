@@ -30,7 +30,7 @@
             object-fit: cover;
         }
         .navbar {
-            background-color: #2d3748;
+            background-color: #2b3e5f;
             position: sticky;
             top: 0;
             z-index: 1000;
