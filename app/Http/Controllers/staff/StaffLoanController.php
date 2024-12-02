@@ -10,17 +10,25 @@ use App\Models\User;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Auth;
 class StaffLoanController extends Controller
 {
     public function index()
-    {
+    {   
+        if (!Auth::check() || Auth::user()->role->name !== 'staff') {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
+
         $loans = Loan::with('book', 'user', 'loanStatus')->get();
         return view('staff.loans.index', compact('loans'));
     }
 
     public function approveLoan(Loan $loan)
-    {
+    {   
+        if (!Auth::check() || Auth::user()->role->name !== 'staff') {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
+
         $borrowedStatus = LoanStatus::where('name', 'borrowed')->first();
 
         if (!$borrowedStatus) {
@@ -46,7 +54,11 @@ class StaffLoanController extends Controller
     }
 
     public function rejectLoan(Loan $loan)
-    {
+    {   
+        if (!Auth::check() || Auth::user()->role->name !== 'staff') {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
+
         $rejectedStatus = LoanStatus::where('name', 'rejected')->first();
 
         if (!$rejectedStatus) {
@@ -68,7 +80,11 @@ class StaffLoanController extends Controller
     }
 
     public function confirmReturn(Loan $loan)
-    {
+    {   
+        if (!Auth::check() || Auth::user()->role->name !== 'staff') {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
+
         $loan->update([
             'actual_return_date' => Carbon::now(),
             'loan_status_id' => LoanStatus::where('name', 'returned')->first()->id,

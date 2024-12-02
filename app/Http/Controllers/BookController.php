@@ -118,6 +118,7 @@ class BookController extends Controller
             'category_id' => $request->category_id,
             'available_copies' => $request->available_copies,
             'total_copies' => $request->total_copies,
+            'image_path' => $book->image_path,
         ]);
 
         return redirect()->route('books.index')->with('success', 'Book updated successfully.');

@@ -7,11 +7,15 @@ use App\Models\Book;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\Auth;
 class AdminBookController extends Controller
 {
     public function index()
-    {
+    {   
+        if (!Auth::check() || Auth::user()->role->name !== 'admin') {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
+
         $books = Book::with(['category', 'reviews', 'loans'])->get();
         foreach ($books as $book) {
             $book->average_rating = $book->reviews->avg('rating');
@@ -23,13 +27,21 @@ class AdminBookController extends Controller
     }
 
     public function create()
-    {
+    {   
+        if (!Auth::check() || Auth::user()->role->name !== 'admin') {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
+
         $categories = Category::all();
         return view('admin.books.create', compact('categories'));
     }
 
     public function store(Request $request)
-    {
+    {   
+        if (!Auth::check() || Auth::user()->role->name !== 'admin') {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
+
         $request->validate([
             'title' => 'required|string|max:255',
             'author' => 'required|string|max:255',
@@ -62,13 +74,21 @@ class AdminBookController extends Controller
     }
 
     public function edit(Book $book)
-    {
+    {   
+        if (!Auth::check() || Auth::user()->role->name !== 'admin') {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
+
         $categories = Category::all();
         return view('admin.books.edit', compact('book', 'categories'));
     }
 
     public function update(Request $request, Book $book)
-    {
+    {   
+        if (!Auth::check() || Auth::user()->role->name !== 'admin') {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
+
         $request->validate([
             'title' => 'required|string|max:255',
             'author' => 'required|string|max:255',
@@ -103,7 +123,11 @@ class AdminBookController extends Controller
     }
 
     public function destroy(Book $book)
-    {
+    {   
+        if (!Auth::check() || Auth::user()->role->name !== 'admin') {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
+        
         $book->delete();
         return redirect()->route('admin.books.index')->with('success', 'Book deleted successfully.');
     }

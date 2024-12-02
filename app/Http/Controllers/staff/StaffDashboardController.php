@@ -7,11 +7,16 @@ use App\Models\Book;
 use App\Models\User;
 use App\Models\Loan;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Auth;
 class StaffDashboardController extends Controller
 {
     public function index()
-    {
+    {   
+
+        if (!Auth::check() || Auth::user()->role->name !== 'staff') {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
+
         $totalBooks = Book::count();
         $totalMahasiswa = User::whereHas('role', function ($query) {
             $query->where('name', 'mahasiswa');

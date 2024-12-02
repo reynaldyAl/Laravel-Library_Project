@@ -16,18 +16,32 @@ class MahasiswaLoanController extends Controller
 {
     public function index()
     {
+
+        if (!Auth::check() || Auth::user()->role->name !== 'mahasiswa') {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
+
         $loans = Loan::where('user_id', Auth::id())->with('book', 'loanStatus')->get();
         return view('mahasiswa.loans.index', compact('loans'));
     }
 
     public function create()
-    {
+    {   
+        if (!Auth::check() || Auth::user()->role->name !== 'mahasiswa') {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
+
         $books = Book::all();
         return view('mahasiswa.loans.create', compact('books'));
     }
 
     public function store(Request $request)
     {
+        
+        if (!Auth::check() || Auth::user()->role->name !== 'mahasiswa') {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
+
         $request->validate([
             'book_id' => 'required|exists:books,id',
             'loan_date' => 'required|date|after_or_equal:today', // Validasi loan_date tidak di masa lalu
@@ -82,7 +96,11 @@ class MahasiswaLoanController extends Controller
     }
 
     public function returnBook(Request $request, $id)
-    {
+    {   
+        if (!Auth::check() || Auth::user()->role->name !== 'mahasiswa') {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
+        
         $loan = Loan::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
 
         // Kirim notifikasi ke staff

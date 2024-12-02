@@ -11,6 +11,11 @@ class MahasiswaDashboardController extends Controller
 {
     public function index()
     {
+        //cek apakah user yang login adalah mahasiswa
+        if (!Auth::check() || Auth::user()->role->name !== 'mahasiswa') {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
+
         $user = Auth::user();
 
         // Ambil data buku yang dipinjam oleh mahasiswa

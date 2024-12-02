@@ -7,23 +7,36 @@ use App\Models\User;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AdminUserController extends Controller
 {
     public function index()
-    {
+    {   
+        if (!Auth::check() || Auth::user()->role->name !== 'admin') {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
+
         $users = User::with('role')->get(); // Pastikan Anda memiliki relasi role di model User
         return view('admin.users.index', compact('users'));
     }
 
     public function create()
-    {
+    {   
+        if (!Auth::check() || Auth::user()->role->name !== 'admin') {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
+
         $roles = Role::all(); // Ambil semua peran
         return view('admin.users.create', compact('roles'));
     }
 
     public function store(Request $request)
-    {
+    {   
+        if (!Auth::check() || Auth::user()->role->name !== 'admin') {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => [
@@ -58,13 +71,21 @@ class AdminUserController extends Controller
     }
 
     public function edit(User $user)
-    {
+    {   
+        if (!Auth::check() || Auth::user()->role->name !== 'admin') {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
+
         $roles = Role::all(); // Ambil semua peran
         return view('admin.users.edit', compact('user', 'roles'));
     }
 
     public function update(Request $request, User $user)
-    {
+    {   
+        if (!Auth::check() || Auth::user()->role->name !== 'admin') {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => [
@@ -99,7 +120,11 @@ class AdminUserController extends Controller
     }
 
     public function destroy(User $user)
-    {
+    {   
+        if (!Auth::check() || Auth::user()->role->name !== 'admin') {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
+        
         $user->delete();
         return redirect()->route('admin.users.index')->with('success', 'User deleted successfully.');
     }

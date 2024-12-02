@@ -9,11 +9,18 @@ use App\Models\Loan;
 use App\Models\Category;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminDashboardController extends Controller
 {
     public function index()
     {
+        // Cek apakah pengguna adalah admin
+        if (!Auth::check() || Auth::user()->role->name !== 'admin') {
+            return redirect()->route('home')->with('error', 'Unauthorized access.');
+        }
+        
+
         // Ambil data buku berdasarkan kategori
         $booksByCategory = Book::selectRaw('category_id, COUNT(*) as count')
             ->groupBy('category_id')
