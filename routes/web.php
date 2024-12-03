@@ -32,6 +32,7 @@ Route::get('/notifications', [NotificationController::class, 'index'])->name('no
 Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
 Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllAsRead');
 Route::get('/fetch-notifications', [NotificationController::class, 'fetchNotifications'])->name('notifications.fetch');
+
 // reviews
 Route::post('reviews/{book}', [ReviewController::class, 'store'])->name('reviews.store');
 Route::get('reviews/{review}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');

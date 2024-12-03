@@ -39,6 +39,10 @@
                 <input type="number" class="form-control" id="total_copies" name="total_copies" required>
             </div>
             <div class="form-group">
+                <label for="synopsis">Synopsis</label>
+                <textarea class="form-control" id="synopsis" name="synopsis" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
                 <label for="image_path">Book Image</label>
                 <input type="file" class="form-control-file" id="image_path" name="image_path" required>
             </div>

@@ -37,6 +37,9 @@ class AdminUserController extends Controller
             return redirect()->route('home')->with('error', 'Unauthorized access.');
         }
 
+        
+        //'/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.ac\.id$/'
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => [

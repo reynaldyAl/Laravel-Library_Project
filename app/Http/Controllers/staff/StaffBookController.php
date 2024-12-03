@@ -45,6 +45,7 @@ class StaffBookController extends Controller
             'category_id' => 'nullable|exists:categories,id',
             'available_copies' => 'required|integer',
             'total_copies' => 'required|integer',
+            'synopsis' => 'required|string',
             'image_path' => 'required|image',
         ]);
 
@@ -60,6 +61,7 @@ class StaffBookController extends Controller
             'category_id' => $request->category_id,
             'available_copies' => $request->available_copies,
             'total_copies' => $request->total_copies,
+            'synopsis' => $request->synopsis,
             'image_path' => 'images/' . $imageName,
         ]);
 
@@ -90,6 +92,7 @@ class StaffBookController extends Controller
             'category_id' => 'nullable|exists:categories,id',
             'available_copies' => 'required|integer',
             'total_copies' => 'required|integer',
+            'synopsis' => 'required|string',
             'image_path' => 'image',
         ]);
 
@@ -113,6 +116,7 @@ class StaffBookController extends Controller
             'category_id' => $request->category_id,
             'available_copies' => $request->available_copies,
             'total_copies' => $request->total_copies,
+            'synopsis' => $request->synopsis,
             'image_path' => $book->image_path,
         ]);
 

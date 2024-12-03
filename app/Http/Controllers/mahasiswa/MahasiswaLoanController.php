@@ -89,7 +89,7 @@ class MahasiswaLoanController extends Controller
             'return_date' => $request->return_date,
             'due_date' => $due_date,
             'loan_status_id' => $loan_status_id,
-            'is_approved' => false, // Set is_approved to false initially
+            'is_approved' => false, 
         ]);
 
         return redirect()->route('mahasiswa.dashboard')->with('success', 'Loan request created successfully. Please wait for approval.');
@@ -115,7 +115,7 @@ class MahasiswaLoanController extends Controller
             ]);
         }
 
-        // Update status pinjaman menjadi "waiting for return confirmation"
+        // pinjam buku
         $waitingReturnStatus = LoanStatus::where('name', 'waiting')->first();
         $loan->update([
             'loan_status_id' => $waitingReturnStatus->id,

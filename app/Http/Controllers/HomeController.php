@@ -9,9 +9,7 @@ use Carbon\Carbon;
 
 class HomeController extends Controller
 {
-    /**
-     * Show the application landing page.
-     */
+    
     public function index(Request $request)
     {
         $query = Book::query();
@@ -40,18 +38,14 @@ class HomeController extends Controller
         return view('home.index', compact('books', 'popularBooks'));
     }
 
-    /**
-     * Show the detail page for a book.
-     */
+    //detail page
     public function show(Book $book)
     {
         $book->load('reviews.user'); // Load reviews with user
         return view('home.detail', compact('book'));
     }
 
-    /**
-     * Show the book catalog.
-     */
+    //book catalog
     public function catalog(Request $request)
     {
         $query = Book::query();

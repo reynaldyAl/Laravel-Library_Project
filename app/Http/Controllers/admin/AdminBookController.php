@@ -50,8 +50,8 @@ class AdminBookController extends Controller
             'category_id' => 'nullable|exists:categories,id',
             'available_copies' => 'required|integer',
             'total_copies' => 'required|integer',
-            'image_path' => 'required|image',
             'synopsis' => 'required|string', // Validasi sinopsis
+            'image_path' => 'required|image',
         ]);
 
         $image = $request->file('image_path');
@@ -66,8 +66,8 @@ class AdminBookController extends Controller
             'category_id' => $request->category_id,
             'available_copies' => $request->available_copies,
             'total_copies' => $request->total_copies,
-            'image_path' => 'images/' . $imageName,
             'synopsis' => $request->synopsis, // Simpan sinopsis
+            'image_path' => 'images/' . $imageName,
         ]);
 
         return redirect()->route('admin.books.index')->with('success', 'Book created successfully.');
@@ -97,8 +97,8 @@ class AdminBookController extends Controller
             'category_id' => 'nullable|exists:categories,id',
             'available_copies' => 'required|integer',
             'total_copies' => 'required|integer',
-            'image_path' => 'image',
             'synopsis' => 'required|string', // Validasi sinopsis
+            'image_path' => 'image',
         ]);
 
         if ($request->hasFile('image_path')) {
@@ -117,6 +117,7 @@ class AdminBookController extends Controller
             'available_copies' => $request->available_copies,
             'total_copies' => $request->total_copies,
             'synopsis' => $request->synopsis, // Simpan sinopsis
+            'image_path' => $book->image_path,
         ]);
 
         return redirect()->route('admin.books.index')->with('success', 'Book updated successfully.');

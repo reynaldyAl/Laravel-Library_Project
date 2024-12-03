@@ -10,7 +10,7 @@
 
         <section id="hero" class="hero-text">
             <img src="{{ $user->profile_image_url }}" alt="profile" class="profile-img" width="200" height="200">
-            <h1 class="heading-warna">{{ $user->name }}</h1>
+            <h1 class="heading-warna">{{ Auth::user()->name }}</h1>
             <p class="paragraf-warna">{{ $user->email }}</p>
             <div class="bio-marquee">
                 <span>Welcome, {{ $user->name }}</span>

@@ -10,7 +10,7 @@ class MahasiswaReviewController extends Controller
 {
     public function index()
     {   
-        //cek apakah user yang login adalah mahasiswa
+        
         if (!Auth::check() || Auth::user()->role->name !== 'mahasiswa') {
             return redirect()->route('home')->with('error', 'Unauthorized access.');
         }

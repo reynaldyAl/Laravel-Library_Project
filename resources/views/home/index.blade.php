@@ -98,38 +98,89 @@
 
 @push('styles')
     <style>
-        .book-card {
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .book-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-        .book-image {
-            height: 100%;
-            object-fit: cover;
-            border-top-left-radius: 10px;
-            border-bottom-left-radius: 10px;
-        }
-        .card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-        }
-        .card-text {
-            font-size: 1rem;
-        }
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #004085;
-        }
-    </style>
+        /* Hero Section */
+    .jumbotron {
+    background: linear-gradient(135deg, #000000, #0984e3);
+    color: white;
+    padding: 4rem 2rem;
+    border-radius: 15px;
+    margin-bottom: 3rem;
+    position: relative;
+    z-index: 1;
+}
+
+    .jumbotron::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h20v20H0V0zm10 10h10v10H10V10z" fill="rgba(255,255,255,0.05)"/></svg>');
+    opacity: 0.1;
+    z-index: -1;
+}
+
+.jumbotron .btn-primary {
+    position: relative;
+    z-index: 2;
+}
+
+/* Search and Content */
+.input-group {
+    position: relative;
+    z-index: 1;
+}
+
+.container {
+    position: relative;
+    z-index: 1;
+}
+
+/* Button Styles */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+    transform: translateY(-1px);
+}
+
+.jumbotron .btn-primary {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    border-radius: 8px;
+}
+
+/* Book Cards */
+.book-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1;
+}
+
+.book-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.book-image {
+    height: 100%;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+</style>
 @endpush

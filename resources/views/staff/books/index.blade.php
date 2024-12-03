@@ -13,6 +13,7 @@
                     <th>Publisher</th>
                     <th>Published Year</th>
                     <th>Category</th>
+                    <th>Synopsis</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -24,6 +25,7 @@
                         <td>{{ $book->publisher }}</td>
                         <td>{{ $book->published_year }}</td>
                         <td>{{ $book->category->name ?? 'N/A' }}</td>
+                        <td>{{ $book->synopsis }}</td>
                         <td>
                             <a href="{{ route('staff.books.edit', $book->id) }}" class="btn btn-warning btn-sm">Edit</a>
                             <form action="{{ route('staff.books.destroy', $book->id) }}" method="POST" style="display:inline;">
