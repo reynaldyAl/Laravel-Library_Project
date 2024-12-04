@@ -30,7 +30,7 @@
   **Class of 2023**
   
   <p align="center">
-    <i>Ingin mejadi programmer handal tapi enggan ngoding hehe</i>
+    <i>"Ingin mejadi programmer handal tapi enggan ngoding"</i>
   </p>
 
   ---
