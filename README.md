@@ -21,7 +21,7 @@
 ## 👨‍💻 Developer Profile
 
 <div align="center">
-  <img src="https://img.shields.io/badge/Role-Full%20Stack%20Developer-blue?style=for-the-badge" alt="Role"/>
+ 
   
   ### Reynaldy Al
   
